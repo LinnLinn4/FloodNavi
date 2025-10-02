@@ -6,9 +6,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      // extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.black,
         elevation: 0,
         centerTitle: true,
         title: const Text(
@@ -30,6 +30,7 @@ class HomePage extends StatelessWidget {
         ],
       ),
       body: Container(
+        padding: EdgeInsets.only(top: 20),
         width: double.infinity,
         height: double.infinity,
         decoration: const BoxDecoration(
@@ -41,14 +42,13 @@ class HomePage extends StatelessWidget {
         ),
 
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center, // center vertically
           children: [
             Text(
               "River Mae Sai\n Mae Sai-Myanmar Bridge Station 1",
               style: TextStyle(color: Colors.white, fontSize: 18),
             ),
             SizedBox(height: 20), // space between widgets
-            Placeholder(fallbackHeight: 150),
+            Placeholder(fallbackHeight: 200),
             SizedBox(height: 20),
 
             Container(
@@ -72,50 +72,73 @@ class HomePage extends StatelessWidget {
 
             SizedBox(height: 20),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.green,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5), // rounded corners
-                    ),
-                    padding: EdgeInsets.all(10),
-                    maximumSize: Size(100, 100),
-                  ),
+            Container(
+              margin: EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
 
-                  onPressed: () => {},
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min, // shrink to fit
-                    children: const [
-                      Icon(Icons.safety_check),
-                      Text(
-                        "Find the\nnearest SafeZone",
-                        textAlign: TextAlign.center,
+                    children: [
+                      Expanded(
+                        child: _buildButton(
+                          Icons.safety_check,
+                          "Nearest SafeZone",
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: _buildButton(
+                          Icons.insert_drive_file_rounded,
+                          "Report Info",
+                        ),
                       ),
                     ],
                   ),
-                ),
-                SizedBox(width: 50),
-                Placeholder(fallbackWidth: 100, fallbackHeight: 100),
-              ],
-            ),
 
-            SizedBox(height: 20),
+                  SizedBox(height: 20),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Placeholder(fallbackWidth: 100, fallbackHeight: 100),
-                SizedBox(width: 50),
-                Placeholder(fallbackWidth: 100, fallbackHeight: 100),
-              ],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: _buildButton(Icons.phone, "Emergency Contact"),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(child: _buildButton(Icons.book, "Handbook")),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),
       ),
     );
   }
+}
+
+Widget _buildButton(IconData icon, String label) {
+  return SizedBox(
+    height: 120,
+    child: ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.green,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5), // rounded corners
+        ),
+        padding: EdgeInsets.all(10),
+      ),
+
+      onPressed: () => {},
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Icon(icon, size: 50),
+          Text(label, textAlign: TextAlign.center),
+        ],
+      ),
+    ),
+  );
 }
