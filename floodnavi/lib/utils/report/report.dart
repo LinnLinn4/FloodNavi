@@ -1,10 +1,10 @@
-enum ReportType { safeZone, highGround, aid, sos }
+enum ReportType { shelter, highGround, aid, sos }
 
 extension ReportTypeX on ReportType {
   String get label {
     switch (this) {
-      case ReportType.safeZone:
-        return 'Safe Zone';
+      case ReportType.shelter:
+        return 'Flood Shelter';
       case ReportType.highGround:
         return 'High Ground';
       case ReportType.aid:
@@ -14,10 +14,9 @@ extension ReportTypeX on ReportType {
     }
   }
 
-  // Temporary simple color/hue – swap to custom icons later.
   double get hue {
     switch (this) {
-      case ReportType.safeZone:
+      case ReportType.shelter:
         return 120; // green
       case ReportType.highGround:
         return 210; // blue
@@ -30,13 +29,20 @@ extension ReportTypeX on ReportType {
 }
 
 class Report {
-  final String id; // uuid or any unique string
+  final String id;
   final ReportType type;
   final double lat;
   final double lng;
-  final String placeName; // shown as marker title
-  final String details; // marker snippet
+  final String placeName;
+  final String details;
   final DateTime createdAt;
+  final int estCapacity;
+  final int currCapacity;
+  final bool hasWater;
+  final bool hasFood;
+  final bool hasToilet;
+  final bool hasCharging;
+  final String access;
 
   Report({
     required this.id,
@@ -46,6 +52,13 @@ class Report {
     required this.placeName,
     required this.details,
     required this.createdAt,
+    required this.estCapacity,
+    required this.currCapacity,
+    this.hasWater = false,
+    this.hasFood = false,
+    this.hasToilet = false,
+    this.hasCharging = false,
+    this.access = '',
   });
 
   // Firestore-ready map
@@ -55,6 +68,13 @@ class Report {
     'lat': lat,
     'lng': lng,
     'placeName': placeName,
+    'estCapacity': estCapacity,
+    'currCapacity': currCapacity,
+    'hasWater': hasWater,
+    'hasFood': hasFood,
+    'hasToilet': hasToilet,
+    'hasCharging': hasCharging,
+    'access': access,
     'details': details,
     'createdAt': createdAt.toIso8601String(),
   };
@@ -65,6 +85,13 @@ class Report {
     lat: (m['lat'] as num).toDouble(),
     lng: (m['lng'] as num).toDouble(),
     placeName: (m['placeName'] as String?) ?? '',
+    estCapacity: (m['estCapacity']),
+    currCapacity: (m['currCapacity']),
+    hasWater: m['hasWater'] as bool? ?? false,
+    hasFood: m['hasFood'] as bool? ?? false,
+    hasToilet: m['hasToilet'] as bool? ?? false,
+    hasCharging: m['hasCharging'] as bool? ?? false,
+    access: (m['access'] as String?) ?? '',
     details: (m['details'] as String?) ?? '',
     createdAt:
         DateTime.tryParse(m['createdAt'] as String? ?? '') ?? DateTime.now(),
