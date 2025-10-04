@@ -4,8 +4,27 @@ import 'package:flutter/material.dart';
 class ReportFormResult {
   final ReportType type;
   final String placeName;
+  final int estCapacity;
+  final int currCapacity;
+  final bool water;
+  final bool food;
+  final bool toilet;
+  final bool charging;
+  final String access;
   final String details;
-  ReportFormResult(this.type, this.placeName, this.details);
+
+  ReportFormResult(
+    this.type,
+    this.placeName,
+    this.estCapacity,
+    this.currCapacity,
+    this.food,
+    this.water,
+    this.toilet,
+    this.charging,
+    this.access,
+    this.details,
+  );
 }
 
 class ReportForm extends StatefulWidget {
@@ -18,7 +37,6 @@ class ReportForm extends StatefulWidget {
 
 class _ReportFormState extends State<ReportForm> {
   final _formKey = GlobalKey<FormState>();
-  late ReportType _type = widget.initialType;
   final _placeCtrl = TextEditingController();
   final _detailsCtrl = TextEditingController();
   final _estCapacityCtrl = TextEditingController();
@@ -29,10 +47,21 @@ class _ReportFormState extends State<ReportForm> {
   bool _toilet = false;
   bool _charging = false;
 
+  late ReportType _type;
+
+  @override
+  void initState() {
+    super.initState();
+    _type = widget.initialType; // ✅ safe place
+  }
+
   @override
   void dispose() {
     _placeCtrl.dispose();
     _detailsCtrl.dispose();
+    _estCapacityCtrl.dispose();
+    _currCapacityCtrl.dispose();
+    _accessCtrl.dispose();
     super.dispose();
   }
 
@@ -112,10 +141,10 @@ class _ReportFormState extends State<ReportForm> {
                     if (n == null || n <= 0) {
                       return 'Enter a valid positive number';
                     }
-                    return null; // ✅ valid
+                    return null;
                   },
                 ),
-                Text('Facilities', style: TextStyle(fontSize: 18)),
+                Text('Facilities', style: TextStyle(fontSize: 14)),
                 Column(
                   children: [
                     CheckboxListTile(
@@ -162,11 +191,20 @@ class _ReportFormState extends State<ReportForm> {
                       child: ElevatedButton(
                         onPressed: () {
                           if (!_formKey.currentState!.validate()) return;
+                          final est = int.parse(_estCapacityCtrl.text.trim());
+                          final curr = int.parse(_currCapacityCtrl.text.trim());
                           Navigator.pop(
                             context,
                             ReportFormResult(
                               _type,
                               _placeCtrl.text.trim(),
+                              est,
+                              curr,
+                              _food,
+                              _water,
+                              _toilet,
+                              _charging,
+                              _accessCtrl.text.trim(),
                               _detailsCtrl.text.trim(),
                             ),
                           );

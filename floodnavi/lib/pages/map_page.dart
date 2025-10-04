@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:floodnavi/utils/report/report.dart';
 import 'package:floodnavi/utils/report/reportform.dart';
+import 'package:floodnavi/utils/report/report_details.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -27,6 +28,7 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
   void initState() {
     super.initState();
     _loadReports();
+    _deleteAllReportsForDebug();
   }
 
   // Storage
@@ -35,7 +37,7 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
 
   // Filter (which types are visible)
   final Set<ReportType> _visibleTypes = {
-    ReportType.safeZone,
+    ReportType.shelter,
     ReportType.highGround,
     ReportType.aid,
     ReportType.sos,
@@ -57,15 +59,6 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
           loaded.isEmpty
               ? [
                   // Optional: a default marker at Mae Sai
-                  Report(
-                    id: 'maesai',
-                    type: ReportType.safeZone,
-                    lat: _maeSai.latitude,
-                    lng: _maeSai.longitude,
-                    placeName: 'Mae Sai',
-                    details: 'Default marker',
-                    createdAt: DateTime.now(),
-                  ),
                 ]
               : loaded,
         );
@@ -81,6 +74,12 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
     );
   }
 
+  Future<void> _deleteAllReportsForDebug() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_storageKey);
+    debugPrint('✅ All saved markers deleted from local storage.');
+  }
+
   Set<Marker> get _visibleMarkers {
     final set = <Marker>{};
     for (final r in _reports) {
@@ -89,7 +88,17 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
         Marker(
           markerId: MarkerId(r.id),
           position: LatLng(r.lat, r.lng),
-          infoWindow: InfoWindow(title: r.placeName, snippet: r.details),
+          infoWindow: InfoWindow(
+            // keep small bubble if you want
+            title: r.placeName,
+            //snippet: r.details,
+            onTap: () => openReportDetails(
+              context,
+              r,
+              _controller,
+            ), // tap bubble -> full sheet
+          ),
+          onTap: () => openReportDetails(context, r, _controller),
           // draggable: true,
           icon: BitmapDescriptor.defaultMarkerWithHue(r.type.hue),
           // onDragEnd: (p) {
@@ -126,7 +135,7 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.white,
-      builder: (_) => ReportForm(initialType: ReportType.safeZone),
+      builder: (_) => ReportForm(initialType: ReportType.shelter),
     );
 
     if (result == null) return; // cancelled
@@ -138,6 +147,13 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
       lat: pos.latitude,
       lng: pos.longitude,
       placeName: result.placeName,
+      estCapacity: result.estCapacity,
+      currCapacity: result.currCapacity,
+      hasFood: result.food,
+      hasWater: result.water,
+      hasToilet: result.toilet,
+      hasCharging: result.charging,
+      access: result.access,
       details: result.details,
       createdAt: DateTime.now(),
     );
