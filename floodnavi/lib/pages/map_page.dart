@@ -58,7 +58,7 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
         ..addAll(
           loaded.isEmpty
               ? [
-                  // Optional: a default marker at Mae Sai
+                  //a default marker
                 ]
               : loaded,
         );
@@ -77,7 +77,7 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
   Future<void> _deleteAllReportsForDebug() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_storageKey);
-    debugPrint('✅ All saved markers deleted from local storage.');
+    debugPrint('All saved markers deleted from local storage.');
   }
 
   Set<Marker> get _visibleMarkers {
@@ -89,14 +89,9 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
           markerId: MarkerId(r.id),
           position: LatLng(r.lat, r.lng),
           infoWindow: InfoWindow(
-            // keep small bubble if you want
             title: r.placeName,
             //snippet: r.details,
-            onTap: () => openReportDetails(
-              context,
-              r,
-              _controller,
-            ), // tap bubble -> full sheet
+            onTap: () => openReportDetails(context, r, _controller),
           ),
           onTap: () => openReportDetails(context, r, _controller),
           // draggable: true,
@@ -156,6 +151,12 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
       access: result.access,
       details: result.details,
       createdAt: DateTime.now(),
+
+      phone: result.phone,
+      peopleCount: result.peopleCount,
+      severity: result.severity,
+      medical: result.medical,
+      trapped: result.trapped,
     );
 
     setState(() => _reports.add(newReport));

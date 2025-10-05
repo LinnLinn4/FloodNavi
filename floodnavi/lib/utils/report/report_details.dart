@@ -33,6 +33,7 @@ void openReportDetails(
                 ),
               ),
               const SizedBox(height: 8),
+
               Row(
                 children: [
                   Icon(_iconForType(r.type), color: Colors.green),
