@@ -1,4 +1,4 @@
-import 'package:floodnavi/utils/report/sos_fields.dart';
+//import 'package:floodnavi/utils/report/sos_fields.dart';
 import 'report.dart';
 import 'package:flutter/material.dart';
 
@@ -187,17 +187,18 @@ class _ReportFormState extends State<ReportForm> {
         return _buildAidFields();
 
       case ReportType.sos:
-        return SosFields(
-          phoneController: _sosPhoneCtrl,
-          peopleController: _sosPeopleCtrl,
-          detailsController: _detailsCtrl,
-          severity: _sosSeverity,
-          medical: _sosMedical,
-          trapped: _sosTrapped,
-          onSeverityChanged: (v) => setState(() => _sosSeverity = v),
-          onMedicalChanged: (v) => setState(() => _sosMedical = v),
-          onTrappedChanged: (v) => setState(() => _sosTrapped = v),
-        );
+        return _buildSosFields();
+      // return SosFields(
+      //   phoneController: _sosPhoneCtrl,
+      //   peopleController: _sosPeopleCtrl,
+      //   detailsController: _detailsCtrl,
+      //   severity: _sosSeverity,
+      //   medical: _sosMedical,
+      //   trapped: _sosTrapped,
+      //   onSeverityChanged: (v) => setState(() => _sosSeverity = v),
+      //   onMedicalChanged: (v) => setState(() => _sosMedical = v),
+      //   onTrappedChanged: (v) => setState(() => _sosTrapped = v),
+      // );
     }
   }
 
@@ -291,54 +292,56 @@ class _ReportFormState extends State<ReportForm> {
     );
   }
 
-  // /// Minimal example for SOS (phone, people, severity, flags, details)
-  // Widget _buildSosFields() {
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.stretch,
-  //     children: [
-  //       TextFormField(
-  //         decoration: const InputDecoration(labelText: 'Contact Phone'),
-  //         controller: _sosPhoneCtrl,
-  //         keyboardType: TextInputType.phone,
-  //         validator: (v) =>
-  //             (v == null || v.trim().isEmpty) ? 'Phone is required' : null,
-  //       ),
-  //       TextFormField(
-  //         decoration: const InputDecoration(labelText: 'People Count'),
-  //         controller: _sosPeopleCtrl,
-  //         keyboardType: TextInputType.number,
-  //         validator: (v) {
-  //           final n = int.tryParse(v ?? '');
-  //           if (n == null || n <= 0) return 'Enter a valid number';
-  //           return null;
-  //         },
-  //       ),
-  //       DropdownButtonFormField<String>(
-  //         value: _sosSeverity,
-  //         decoration: const InputDecoration(labelText: 'Severity'),
-  //         items: const ['Low', 'Medium', 'High']
-  //             .map((s) => DropdownMenuItem(value: s, child: Text(s)))
-  //             .toList(),
-  //         onChanged: (v) => setState(() => _sosSeverity = (v ?? 'Medium')),
-  //       ),
-  //       CheckboxListTile(
-  //         title: const Text('Medical Emergency'),
-  //         value: _sosMedical,
-  //         onChanged: (v) => setState(() => _sosMedical = v ?? false),
-  //       ),
-  //       CheckboxListTile(
-  //         title: const Text('People Trapped / Need Rescue'),
-  //         value: _sosTrapped,
-  //         onChanged: (v) => setState(() => _sosTrapped = v ?? false),
-  //       ),
-  //       TextFormField(
-  //         controller: _detailsCtrl,
-  //         decoration: const InputDecoration(labelText: 'Details (optional)'),
-  //         maxLines: 3,
-  //       ),
-  //     ],
-  //   );
-  // }
+  /// Minimal example for SOS (phone, people, severity, flags, details)
+  Widget _buildSosFields() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        TextFormField(
+          decoration: const InputDecoration(labelText: 'Contact Phone'),
+          controller: _sosPhoneCtrl,
+          keyboardType: TextInputType.phone,
+          validator: (v) =>
+              (v == null || v.trim().isEmpty) ? 'Phone is required' : null,
+        ),
+        TextFormField(
+          decoration: const InputDecoration(labelText: 'People Count'),
+          controller: _sosPeopleCtrl,
+          keyboardType: TextInputType.number,
+          validator: (v) {
+            final n = int.tryParse(v ?? '');
+            if (n == null || n <= 0) return 'Enter a valid number';
+            return null;
+          },
+        ),
+        DropdownButtonFormField<String>(
+          value: _sosSeverity,
+          decoration: const InputDecoration(labelText: 'Severity'),
+          items: const [
+            'Low',
+            'Medium',
+            'High',
+          ].map((s) => DropdownMenuItem(value: s, child: Text(s))).toList(),
+          onChanged: (v) => setState(() => _sosSeverity = (v ?? 'Medium')),
+        ),
+        CheckboxListTile(
+          title: const Text('Medical Emergency'),
+          value: _sosMedical,
+          onChanged: (v) => setState(() => _sosMedical = v ?? false),
+        ),
+        CheckboxListTile(
+          title: const Text('People Trapped / Need Rescue'),
+          value: _sosTrapped,
+          onChanged: (v) => setState(() => _sosTrapped = v ?? false),
+        ),
+        TextFormField(
+          controller: _detailsCtrl,
+          decoration: const InputDecoration(labelText: 'Details (optional)'),
+          maxLines: 3,
+        ),
+      ],
+    );
+  }
 
   void _onSubmit() {
     if (!_formKey.currentState!.validate()) return;
@@ -349,10 +352,24 @@ class _ReportFormState extends State<ReportForm> {
     String access = _accessCtrl.text.trim();
     String details = _detailsCtrl.text.trim();
 
+    String? phone;
+    int? peopleCount;
+    String? severity;
+    bool? medical;
+    bool? trapped;
+
     // Only validate capacities for shelter/highGround
     if (_type == ReportType.shelter || _type == ReportType.highGround) {
       est = int.parse(_estCapacityCtrl.text.trim());
       curr = int.parse(_currCapacityCtrl.text.trim());
+    }
+
+    if (_type == ReportType.sos) {
+      phone = _sosPhoneCtrl.text.trim();
+      peopleCount = int.parse(_sosPeopleCtrl.text.trim());
+      severity = _sosSeverity;
+      medical = _sosMedical;
+      trapped = _sosTrapped;
     }
 
     Navigator.pop(
@@ -368,6 +385,11 @@ class _ReportFormState extends State<ReportForm> {
         charging: charging,
         access: access,
         details: details,
+        phone: phone,
+        peopleCount: peopleCount,
+        severity: severity,
+        medical: medical,
+        trapped: trapped,
       ),
     );
   }
