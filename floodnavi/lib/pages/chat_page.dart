@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'com_chat1.dart'; // Assuming the community chat page file
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
@@ -18,16 +19,16 @@ class _ChatPageState extends State<ChatPage> {
       'title': 'Community Chat',
       'subtitle': 'Shelter Alert !!!',
       'time': 'Just now',
-      'active': true,
       'color': Colors.purple,
+      'active': false,
     },
     {
       'avatar': 'H',
       'title': 'Channel',
       'subtitle': 'Welcome!',
       'time': 'Today',
-      'active': true,
       'color': Colors.blue,
+      'active': false,
     },
   ];
 
@@ -78,7 +79,7 @@ class _ChatPageState extends State<ChatPage> {
                 itemCount: tabs.length,
                 itemBuilder: (context, index) {
                   return Padding(
-                    padding: EdgeInsets.only(right: 8),
+                    padding: const EdgeInsets.only(right: 8),
                     child: ChoiceChip(
                       label: Text(tabs[index]),
                       selected: selectedTab == index,
@@ -108,7 +109,7 @@ class _ChatPageState extends State<ChatPage> {
                     margin: const EdgeInsets.symmetric(vertical: 6),
                     child: ListTile(
                       leading: CircleAvatar(
-                        backgroundColor: chat['color'],
+                        backgroundColor: chat['color'] as Color,
                         child: Text(
                           chat['avatar'],
                           style: const TextStyle(color: Colors.white),
@@ -126,7 +127,7 @@ class _ChatPageState extends State<ChatPage> {
                             chat['time'],
                             style: const TextStyle(fontSize: 12),
                           ),
-                          if (chat['active'])
+                          if (chat['active'] == true)
                             Container(
                               margin: const EdgeInsets.only(top: 4),
                               width: 8,
@@ -139,7 +140,15 @@ class _ChatPageState extends State<ChatPage> {
                         ],
                       ),
                       onTap: () {
-                        // Navigate to chat detail page here
+                        if (chat['title'] == 'Community Chat') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const CommunityChat(),
+                            ),
+                          );
+                        }
+                        // Handle other chat navigation if needed
                       },
                     ),
                   );
