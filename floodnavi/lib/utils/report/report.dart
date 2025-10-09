@@ -36,6 +36,8 @@ class Report {
   final String placeName;
   final String details;
   final DateTime createdAt;
+
+  //Shelter/ High Ground
   final int estCapacity;
   final int currCapacity;
   final bool hasWater;
@@ -43,6 +45,13 @@ class Report {
   final bool hasToilet;
   final bool hasCharging;
   final String access;
+
+  //SOS
+  final String? phone;
+  final int? peopleCount;
+  final String? severity;
+  final bool? medical;
+  final bool? trapped;
 
   Report({
     required this.id,
@@ -59,9 +68,15 @@ class Report {
     this.hasToilet = false,
     this.hasCharging = false,
     this.access = '',
+
+    //SOS
+    this.phone,
+    this.peopleCount,
+    this.severity,
+    this.medical,
+    this.trapped,
   });
 
-  // Firestore-ready map
   Map<String, dynamic> toMap() => {
     'id': id,
     'type': type.index,
@@ -77,6 +92,12 @@ class Report {
     'access': access,
     'details': details,
     'createdAt': createdAt.toIso8601String(),
+
+    'phone': phone,
+    'peopleCount': peopleCount,
+    'severity': severity,
+    'medical': medical,
+    'trapped': trapped,
   };
 
   factory Report.fromMap(Map<String, dynamic> m) => Report(
@@ -95,5 +116,12 @@ class Report {
     details: (m['details'] as String?) ?? '',
     createdAt:
         DateTime.tryParse(m['createdAt'] as String? ?? '') ?? DateTime.now(),
+
+    //SOS
+    phone: m['phone'],
+    peopleCount: m['peopleCount'],
+    severity: m['severity'],
+    medical: m['medical'],
+    trapped: m['trapped'],
   );
 }
