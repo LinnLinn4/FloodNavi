@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'emergency_contact.dart'; // Import your emergency contact page
+import 'emergency_handbook.dart'; // Import your emergency handbook page
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -115,7 +116,13 @@ class HomePage extends StatelessWidget {
                       const SizedBox(width: 10),
                       Expanded(
                         child: _buildButton(Icons.book, "Handbook", () {
-                          // Add navigation or action here
+                          // Navigate to EmergencyHandbookPage
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EmergencyHandbookPage(),
+                            ),
+                          );
                         }),
                       ),
                     ],
