@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'emergency_contact.dart'; // Import your emergency contact page
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -6,7 +7,6 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 0,
@@ -33,24 +33,17 @@ class HomePage extends StatelessWidget {
         padding: EdgeInsets.only(top: 20),
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-          color: Colors.black,
-          // image: DecorationImage(
-          //   image: AssetImage("assets/images/background.jpg"),
-          //   fit: BoxFit.cover,
-          // ),
-        ),
-
+        decoration: const BoxDecoration(color: Colors.black),
         child: Column(
           children: [
-            Text(
+            const Text(
               "River Mae Sai\n Mae Sai-Myanmar Bridge Station 1",
               style: TextStyle(color: Colors.white, fontSize: 18),
+              textAlign: TextAlign.center,
             ),
-            SizedBox(height: 20), // space between widgets
-            Placeholder(fallbackHeight: 200),
-            SizedBox(height: 20),
-
+            const SizedBox(height: 20), // space between widgets
+            const Placeholder(fallbackHeight: 200),
+            const SizedBox(height: 20),
             Container(
               decoration: BoxDecoration(
                 color: Colors.red,
@@ -59,53 +52,72 @@ class HomePage extends StatelessWidget {
               padding: const EdgeInsets.all(10),
               margin: const EdgeInsets.all(10),
               child: Row(
-                children: [
+                children: const [
                   Icon(Icons.crisis_alert, color: Colors.white),
                   SizedBox(width: 10),
-                  Text(
-                    "High risk! Flood expected in your area.\nLast update: 10 mins ago",
-                    style: TextStyle(color: Colors.white, fontSize: 16),
+                  Expanded(
+                    child: Text(
+                      "High risk! Flood expected in your area.\nLast update: 10 mins ago",
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
                   ),
                 ],
               ),
             ),
-
-            SizedBox(height: 20),
-
+            const SizedBox(height: 20),
             Container(
-              margin: EdgeInsets.all(10),
+              margin: const EdgeInsets.all(10),
               child: Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-
                     children: [
                       Expanded(
                         child: _buildButton(
                           Icons.safety_check,
                           "Nearest SafeZone",
+                          () {
+                            // Add navigation or action here
+                          },
                         ),
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Expanded(
                         child: _buildButton(
                           Icons.insert_drive_file_rounded,
                           "Report Info",
+                          () {
+                            // Add navigation or action here
+                          },
                         ),
                       ),
                     ],
                   ),
-
-                  SizedBox(height: 20),
-
+                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Expanded(
-                        child: _buildButton(Icons.phone, "Emergency Contact"),
+                        child: _buildButton(
+                          Icons.phone,
+                          "Emergency Contact",
+                          () {
+                            // Navigate to EmergencyContactScreen
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EmergencyContactScreen(),
+                              ),
+                            );
+                          },
+                        ),
                       ),
-                      SizedBox(width: 10),
-                      Expanded(child: _buildButton(Icons.book, "Handbook")),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: _buildButton(Icons.book, "Handbook", () {
+                          // Add navigation or action here
+                        }),
+                      ),
                     ],
                   ),
                 ],
@@ -118,7 +130,7 @@ class HomePage extends StatelessWidget {
   }
 }
 
-Widget _buildButton(IconData icon, String label) {
+Widget _buildButton(IconData icon, String label, VoidCallback onPressed) {
   return SizedBox(
     height: 120,
     child: ElevatedButton(
@@ -128,10 +140,9 @@ Widget _buildButton(IconData icon, String label) {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5), // rounded corners
         ),
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
       ),
-
-      onPressed: () => {},
+      onPressed: onPressed,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
