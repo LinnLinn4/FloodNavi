@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'com_chat1.dart'; // Assuming the community chat page file
+import 'community_channel_chat.dart'; // Channel UI
+import 'com_chat1.dart'; // Community Chat UI
+
+void main() => runApp(MaterialApp(home: ChatPage()));
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
@@ -9,13 +12,15 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  int selectedTab = 0; // 0: All, 1: Unread, 2: Recent, 3: Active
+  int selectedTab = 0;
   final List<String> tabs = ['All', 'Unread (0)', 'Recent (0)', 'Active (1)'];
   final TextEditingController searchController = TextEditingController();
 
   final List<Map<String, dynamic>> chats = [
     {
-      'avatar': 'C',
+      // Use the Material icon for Community Chat
+      'avatar': Icons.groups,
+      'isIcon': true,
       'title': 'Community Chat',
       'subtitle': 'Shelter Alert !!!',
       'time': 'Just now',
@@ -23,7 +28,9 @@ class _ChatPageState extends State<ChatPage> {
       'active': false,
     },
     {
-      'avatar': 'H',
+      // Use emoji for Channel
+      'avatar': '📢',
+      'isIcon': false,
       'title': 'Channel',
       'subtitle': 'Welcome!',
       'time': 'Today',
@@ -110,10 +117,19 @@ class _ChatPageState extends State<ChatPage> {
                     child: ListTile(
                       leading: CircleAvatar(
                         backgroundColor: chat['color'] as Color,
-                        child: Text(
-                          chat['avatar'],
-                          style: const TextStyle(color: Colors.white),
-                        ),
+                        child: chat['isIcon'] == true
+                            ? Icon(
+                                chat['avatar'],
+                                color: Colors.white,
+                                size: 22,
+                              )
+                            : Text(
+                                chat['avatar'],
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 22,
+                                ),
+                              ),
                       ),
                       title: Text(
                         chat['title'],
@@ -147,8 +163,15 @@ class _ChatPageState extends State<ChatPage> {
                               builder: (context) => const CommunityChat(),
                             ),
                           );
+                        } else if (chat['title'] == 'Channel') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const CommunityChannelChat(isAdmin: false),
+                            ),
+                          );
                         }
-                        // Handle other chat navigation if needed
                       },
                     ),
                   );
