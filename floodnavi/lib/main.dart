@@ -1,10 +1,13 @@
+import 'package:floodnavi/utils/flood_forecast/notification.dart';
 import 'package:flutter/material.dart';
 import 'pages/home_page.dart';
 import 'pages/map_page.dart';
 import 'pages/chat_page.dart';
 import 'pages/profile_page.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService.instance.init();
   runApp(const MyApp());
 }
 
@@ -50,6 +53,7 @@ class _DefaultLayoutState extends State<DefaultLayout> {
     return Scaffold(
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,

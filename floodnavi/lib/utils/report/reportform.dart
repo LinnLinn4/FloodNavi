@@ -358,7 +358,7 @@ class _ReportFormState extends State<ReportForm> {
     bool? medical;
     bool? trapped;
 
-    // Only validate capacities for shelter/highGround
+    // Only for shelter/highGround
     if (_type == ReportType.shelter || _type == ReportType.highGround) {
       est = int.parse(_estCapacityCtrl.text.trim());
       curr = int.parse(_currCapacityCtrl.text.trim());
@@ -379,7 +379,7 @@ class _ReportFormState extends State<ReportForm> {
         placeName: _placeCtrl.text.trim(),
         estCapacity: est,
         currCapacity: curr,
-        food: food, // keep your existing ordering
+        food: food,
         water: water,
         toilet: toilet,
         charging: charging,
