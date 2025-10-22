@@ -4,6 +4,8 @@ import '../utils/flood_forecast/weather_api.dart';
 import '../utils/flood_forecast/flood_daily.dart';
 import 'package:floodnavi/utils/flood_forecast/forecast_model.dart' as forecast;
 import 'package:floodnavi/utils/flood_forecast/notification.dart' as noti;
+import 'emergency_contact.dart'; // Import your emergency contact page
+import 'emergency_handbook.dart'; // Import your emergency handbook page
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -33,7 +35,6 @@ class _HomePage extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 0,
