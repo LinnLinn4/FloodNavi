@@ -328,10 +328,30 @@ class _HomePage extends State<HomePage> {
                             child: _buildButton(
                               Icons.phone,
                               "Emergency Contact",
+                              () {
+                                // Navigate to EmergencyContactScreen
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        EmergencyContactScreen(),
+                                  ),
+                                );
+                              },
                             ),
                           ),
                           SizedBox(width: 10),
-                          Expanded(child: _buildButton(Icons.book, "Handbook")),
+                          Expanded(
+                            child: _buildButton(Icons.book, "Handbook", () {
+                              // Navigate to EmergencyHandbookPage
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => EmergencyHandbookPage(),
+                                ),
+                              );
+                            }),
+                          ),
                         ],
                       ),
                     ],
@@ -346,7 +366,7 @@ class _HomePage extends State<HomePage> {
   }
 }
 
-Widget _buildButton(IconData icon, String label) {
+Widget _buildButton(IconData icon, String label, VoidCallback onPressed) {
   return SizedBox(
     height: 120,
     child: ElevatedButton(
@@ -357,7 +377,7 @@ Widget _buildButton(IconData icon, String label) {
         padding: EdgeInsets.all(10),
       ),
 
-      onPressed: () => {},
+      onPressed: onPressed,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
