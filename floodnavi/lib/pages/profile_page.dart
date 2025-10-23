@@ -6,12 +6,11 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        backgroundColor: Colors.black,
         elevation: 0,
-        leading: Icon(Icons.arrow_back, color: Colors.black),
-        title: const Text('Profile', style: TextStyle(color: Colors.black)),
+        title: const Text('Profile', style: TextStyle(color: Colors.white)),
         centerTitle: true,
       ),
       body: Padding(
@@ -20,19 +19,21 @@ class ProfilePage extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 40,
-              backgroundImage: AssetImage(
-                'lib/assets/Stewie.jpg',
-              ), // Make sure this matches your file!
+              backgroundImage: AssetImage('lib/assets/Stewie.jpg'),
               backgroundColor: Colors.grey[200],
             ),
             const SizedBox(height: 10),
             const Text(
               "NS",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 19,
+                color: Colors.white,
+              ),
             ),
             const Text(
               "nsjerry@gmail.com",
-              style: TextStyle(color: Color.fromARGB(255, 104, 104, 104)),
+              style: TextStyle(color: Colors.white60),
             ),
             const SizedBox(height: 12),
             ElevatedButton(
@@ -51,39 +52,57 @@ class ProfilePage extends StatelessWidget {
             ),
             const Divider(height: 30),
             ListTile(
-              leading: const Icon(Icons.download, color: Colors.black87),
-              title: const Text('Downloads'),
+              leading: const Icon(Icons.download, color: Colors.white),
+              title: const Text(
+                'Downloads',
+                style: TextStyle(color: Colors.white),
+              ),
               onTap: () {},
             ),
             ListTile(
-              leading: const Icon(Icons.language, color: Colors.black87),
-              title: const Text('Language'),
+              leading: const Icon(Icons.language, color: Colors.white),
+              title: const Text(
+                'Language',
+                style: TextStyle(color: Colors.white),
+              ),
               onTap: () {},
             ),
             ListTile(
-              leading: const Icon(Icons.location_on, color: Colors.black87),
-              title: const Text('Location'),
+              leading: const Icon(Icons.location_on, color: Colors.white),
+              title: const Text(
+                'Location',
+                style: TextStyle(color: Colors.white),
+              ),
               onTap: () {},
             ),
             ListTile(
-              leading: const Icon(Icons.share, color: Colors.black87),
-              title: const Text('Share with Friends'),
+              leading: const Icon(Icons.share, color: Colors.white),
+              title: const Text(
+                'Share with Friends',
+                style: TextStyle(color: Colors.white),
+              ),
               onTap: () {},
             ),
             ListTile(
               leading: const Icon(Icons.star_rate, color: Colors.orange),
-              title: const Text('Rate Our App'),
+              title: const Text(
+                'Rate Our App',
+                style: TextStyle(color: Colors.white),
+              ),
               onTap: () {},
             ),
             const Spacer(),
             ListTile(
               leading: const Icon(Icons.logout, color: Colors.red),
-              title: const Text('Log Out'),
+              title: const Text(
+                'Log Out',
+                style: TextStyle(color: Colors.white),
+              ),
               onTap: () {},
             ),
             const SizedBox(height: 8),
             const Text(
-              'App version 0.03',
+              'App version 0.01',
               style: TextStyle(color: Colors.grey, fontSize: 11),
             ),
           ],

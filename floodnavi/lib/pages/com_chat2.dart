@@ -119,51 +119,52 @@ class _CommunityChatState extends State<CommunityChat> {
                       ),
                     ],
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Shelter Alert',
-                        style: TextStyle(
-                          color: Colors.black87,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      _buildInfoRow(
-                        '📍',
-                        'Wat Sri Muang Temple Community Hall',
-                      ),
-                      _buildInfoRow('👥', 'Capacity: 20 spots free'),
-                      _buildInfoRow('🚰', 'Drinking water, food, power'),
-                      _buildInfoRow('📏', '2.1 km from you'),
-                      _buildInfoRow('🛣️', 'Road accessible'),
-                      _buildInfoRow('⏳', 'Status: Confirmed'),
-                      const SizedBox(height: 16),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF4CAF50),
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
-                            ),
-                          ),
-                          child: const Text(
-                            'View',
-                            style: TextStyle(fontSize: 14),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  child: Text("Hello!!!!"),
+                  // child: Column(
+                  //   crossAxisAlignment: CrossAxisAlignment.start,
+                  //   children: [
+                  //     const Text(
+                  //       'Shelter Alert',
+                  //       style: TextStyle(
+                  //         color: Colors.black87,
+                  //         fontWeight: FontWeight.bold,
+                  //         fontSize: 16,
+                  //       ),
+                  //     ),
+                  //     const SizedBox(height: 12),
+                  //     _buildInfoRow(
+                  //       '📍',
+                  //       'Wat Sri Muang Temple Community Hall',
+                  //     ),
+                  //     _buildInfoRow('👥', 'Capacity: 20 spots free'),
+                  //     _buildInfoRow('🚰', 'Drinking water, food, power'),
+                  //     _buildInfoRow('📏', '2.1 km from you'),
+                  //     _buildInfoRow('🛣️', 'Road accessible'),
+                  //     _buildInfoRow('⏳', 'Status: Confirmed'),
+                  //     const SizedBox(height: 16),
+                  //     Align(
+                  //       alignment: Alignment.centerRight,
+                  //       child: ElevatedButton(
+                  //         onPressed: () {},
+                  //         style: ElevatedButton.styleFrom(
+                  //           backgroundColor: const Color(0xFF4CAF50),
+                  //           foregroundColor: Colors.white,
+                  //           shape: RoundedRectangleBorder(
+                  //             borderRadius: BorderRadius.circular(20),
+                  //           ),
+                  //           padding: const EdgeInsets.symmetric(
+                  //             horizontal: 16,
+                  //             vertical: 8,
+                  //           ),
+                  //         ),
+                  //         child: const Text(
+                  //           'View',
+                  //           style: TextStyle(fontSize: 14),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
                 ),
                 const SizedBox(height: 8),
                 Row(

@@ -24,7 +24,7 @@ class _EmergencyHandbookPageState extends State<EmergencyHandbookPage> {
       // Read the asset file
       final byteData = await DefaultAssetBundle.of(
         context,
-      ).load('lib/assets/sample.pdf');
+      ).load('lib/assets/Emergency_Handbook.pdf');
       final bytes = byteData.buffer.asUint8List();
 
       // Write to downloads folder
@@ -74,7 +74,7 @@ class _EmergencyHandbookPageState extends State<EmergencyHandbookPage> {
           ),
         ],
       ),
-      body: SfPdfViewer.asset('lib/assets/sample.pdf'),
+      body: SfPdfViewer.asset('lib/assets/Emergency_Handbook.pdf'),
     );
   }
 }

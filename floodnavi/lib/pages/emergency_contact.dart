@@ -18,28 +18,40 @@ class EmergencyContact {
 class EmergencyContactScreen extends StatelessWidget {
   final List<EmergencyContact> contacts = [
     EmergencyContact(
-      name: 'Police',
-      phoneNumber: '191',
-      color: Colors.blue,
+      name: 'Mae Sai Police Station',
+      phoneNumber: '053-731-222',
+      color: Colors.green,
       icon: Icons.security,
     ),
     EmergencyContact(
-      name: 'Fire',
-      phoneNumber: '199',
-      color: Colors.blue,
-      icon: Icons.local_fire_department,
+      name: 'Department of Disaster Prevention and Mitigation (DDPM)',
+      phoneNumber: '1784',
+      color: Colors.green,
+      icon: Icons.flood,
     ),
     EmergencyContact(
-      name: 'Ambulance',
+      name: 'Ambulance/ Medical Emergency',
       phoneNumber: '1669',
-      color: Colors.blue,
+      color: Colors.green,
       icon: Icons.medical_services,
     ),
     EmergencyContact(
-      name: 'Flood Rescue',
-      phoneNumber: '1234',
-      color: Colors.blue,
+      name: 'Mae Sai Subdistrict Municipality',
+      phoneNumber: '199',
+      color: Colors.green,
+      icon: Icons.account_balance_rounded,
+    ),
+    EmergencyContact(
+      name: 'For Myanmar Flood Victims in Mae Sai',
+      phoneNumber: '087-726-5404',
+      color: Colors.green,
       icon: Icons.water,
+    ),
+    EmergencyContact(
+      name: 'Fire Station – Mae Sai, Chiang Rai',
+      phoneNumber: '0-5373-3123',
+      color: Colors.green,
+      icon: Icons.local_fire_department,
     ),
   ];
 
@@ -55,11 +67,15 @@ class EmergencyContactScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text(
           'Emergency Contacts',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+            color: Colors.white,
+          ),
         ),
         backgroundColor: Colors.green,
         centerTitle: true,

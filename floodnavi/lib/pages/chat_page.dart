@@ -22,7 +22,7 @@ class _ChatPageState extends State<ChatPage> {
       'avatar': Icons.groups,
       'isIcon': true,
       'title': 'Community Chat',
-      'subtitle': 'Shelter Alert !!!',
+      'subtitle': 'Someone sent a message',
       'time': 'Just now',
       'color': Colors.purple,
       'active': false,
@@ -42,18 +42,18 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         title: const Text(
           "Messages",
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        iconTheme: const IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.white),
         actions: [
           IconButton(
-            icon: const Icon(Icons.search, color: Colors.black),
+            icon: const Icon(Icons.search, color: Colors.white),
             onPressed: () {},
           ),
         ],
@@ -90,7 +90,7 @@ class _ChatPageState extends State<ChatPage> {
                     child: ChoiceChip(
                       label: Text(tabs[index]),
                       selected: selectedTab == index,
-                      selectedColor: Colors.blue.shade100,
+                      selectedColor: Colors.green.shade100,
                       onSelected: (_) {
                         setState(() {
                           selectedTab = index;

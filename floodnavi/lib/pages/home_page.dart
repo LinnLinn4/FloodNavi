@@ -1,17 +1,19 @@
+import 'package:floodnavi/pages/map_page.dart';
 import 'package:flutter/material.dart';
 import '../utils/flood_forecast/graph.dart';
 import '../utils/flood_forecast/weather_api.dart';
 import '../utils/flood_forecast/flood_daily.dart';
 import 'package:floodnavi/utils/flood_forecast/forecast_model.dart' as forecast;
 import 'package:floodnavi/utils/flood_forecast/notification.dart' as noti;
-import 'emergency_contact.dart'; // Import your emergency contact page
-import 'emergency_handbook.dart'; // Import your emergency handbook page
+import 'emergency_contact.dart';
+import 'emergency_handbook.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
   static const _lat = 20.428056; // Mae Sai
   static const _lon = 99.883611;
   static const _dischargeThreshold = 397.59;
+  const HomePage({super.key, required this.onTabSelected});
+  final void Function(int) onTabSelected;
 
   @override
   State<HomePage> createState() => _HomePage();
@@ -35,6 +37,7 @@ class _HomePage extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.black,
         elevation: 0,
@@ -308,6 +311,9 @@ class _HomePage extends State<HomePage> {
                             child: _buildButton(
                               Icons.safety_check,
                               "Nearest SafeZone",
+                              () {
+                                widget.onTabSelected(1);
+                              },
                             ),
                           ),
                           SizedBox(width: 10),
@@ -315,6 +321,9 @@ class _HomePage extends State<HomePage> {
                             child: _buildButton(
                               Icons.insert_drive_file_rounded,
                               "Report Info",
+                              () {
+                                widget.onTabSelected(1);
+                              },
                             ),
                           ),
                         ],

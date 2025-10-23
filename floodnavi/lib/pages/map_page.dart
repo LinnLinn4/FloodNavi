@@ -471,17 +471,17 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
       child: Card(
         margin: const EdgeInsets.only(top: 8, left: 12, right: 12),
         child: Theme(
-          // makes ExpansionTile dense and clean
+          // Makes ExpansionTile dense and clean
           data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
           child: ExpansionTile(
             initiallyExpanded: _filtersExpanded,
             onExpansionChanged: (v) => setState(() => _filtersExpanded = v),
             title: Row(
-              children: [
-                const Icon(Icons.filter_list),
-                const SizedBox(width: 8),
-                const Text('Filters'),
-                const Spacer(),
+              children: const [
+                Icon(Icons.filter_list),
+                SizedBox(width: 8),
+                Text('Filters'),
+                Spacer(),
               ],
             ),
             children: [
@@ -495,7 +495,21 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 4),
                       child: FilterChip(
-                        label: Text(t.label),
+                        label: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              width: 10,
+                              height: 10,
+                              margin: const EdgeInsets.only(right: 6),
+                              decoration: BoxDecoration(
+                                color: _colorForType(t),
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                            Text(t.label),
+                          ],
+                        ),
                         selected: selected,
                         onSelected: (_) {
                           setState(() {
@@ -506,6 +520,8 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
                             }
                           });
                         },
+                        selectedColor: _colorForType(t).withOpacity(0.15),
+                        checkmarkColor: _colorForType(t),
                       ),
                     );
                   }).toList(),
@@ -516,6 +532,19 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
         ),
       ),
     );
+  }
+
+  Color _colorForType(ReportType t) {
+    switch (t) {
+      case ReportType.shelter:
+        return Colors.green;
+      case ReportType.highGround:
+        return Colors.blue;
+      case ReportType.aid:
+        return Colors.red;
+      case ReportType.sos:
+        return Colors.orange;
+    }
   }
 
   @override
