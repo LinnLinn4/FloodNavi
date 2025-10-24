@@ -1,4 +1,10 @@
 import 'dart:convert';
+import 'dart:async';
+
+import 'package:flutter_map/flutter_map.dart' as fmap;
+import 'package:latlong2/latlong.dart' as latlng;
+import '../utils/map_manager/offline_map_manager.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -6,6 +12,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:floodnavi/utils/report/report.dart';
 import 'package:floodnavi/utils/report/reportform.dart';
 import 'package:floodnavi/utils/report/report_details.dart';
+import 'package:floodnavi/utils/report/report_data.dart';
+//import 'package:floodnavi/utils/map_manager/offline_map_manager.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -16,6 +24,8 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
   GoogleMapController? _controller;
+  String? _localTilesRoot;
+  final _online = true;
 
   // Mae Sai Location
   static const LatLng _maeSai = LatLng(20.4397, 99.8790);
@@ -23,19 +33,77 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
     target: _maeSai,
     zoom: 13,
   );
+  String? _tilesRoot;
+
+  bool _isOnline = true;
+  late StreamSubscription<InternetConnectionStatus> _connSub;
 
   @override
   void initState() {
     super.initState();
     _loadReports();
-    _deleteAllReportsForDebug();
+    _initTilesRoot();
+    _watchConnectivity();
+  }
+
+  Future<void> _initTilesRoot() async {
+    _tilesRoot = await OfflineMapManager.tilesRootPath();
+    setState(() {});
+  }
+
+  void _watchConnectivity() async {
+    final connectionChecker = InternetConnectionChecker.instance;
+
+    // Initial check
+    connectionChecker.hasConnection.then((connected) {
+      setState(() => _isOnline = connected);
+    });
+
+    // Listen for connectivity changes
+    _connSub = connectionChecker.onStatusChange.listen((status) {
+      final online = status == InternetConnectionStatus.connected;
+      if (online != _isOnline) {
+        setState(() => _isOnline = online);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              online
+                  ? 'Connected to the internet'
+                  : 'Offline – showing offline map',
+            ),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    });
+    connectionChecker.dispose();
+  }
+
+  @override
+  void dispose() {
+    _connSub.cancel();
+    super.dispose();
+  }
+
+  Future<void> _downloadTiles() async {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Downloading map for offline use...')),
+    );
+
+    await OfflineMapManager.downloadMaeSai(onProgress: (p) {});
+
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Offline map download complete ✅')),
+    );
   }
 
   // Storage
   final List<Report> _reports = [];
   static const _storageKey = 'reports_v1';
 
-  // Filter (which types are visible)
+  // Report Types
   final Set<ReportType> _visibleTypes = {
     ReportType.shelter,
     ReportType.highGround,
@@ -45,25 +113,52 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
 
   Future<void> _loadReports() async {
     final prefs = await SharedPreferences.getInstance();
-    final list = prefs.getStringList(_storageKey) ?? [];
+    final imported = prefs.getBool(seedImportedKey) ?? false;
+
+    final saved = prefs.getStringList(_storageKey) ?? [];
     final loaded = <Report>[];
-    for (final s in list) {
+
+    for (final s in saved) {
       try {
         loaded.add(Report.fromMap(jsonDecode(s) as Map<String, dynamic>));
       } catch (_) {}
     }
-    setState(() {
-      _reports
-        ..clear()
-        ..addAll(
-          loaded.isEmpty
-              ? [
-                  //a default marker
-                ]
-              : loaded,
+
+    if (loaded.isEmpty) {
+      final seeds = List<Report>.from(reports);
+      if (seeds.isNotEmpty) {
+        setState(() {
+          _reports
+            ..clear()
+            ..addAll(seeds);
+        });
+
+        await prefs.setStringList(
+          _storageKey,
+          seeds.map((r) => jsonEncode(r.toMap())).toList(),
         );
-    });
-    await _saveReports();
+        await prefs.setBool(seedImportedKey, true);
+
+        // Center the camera after the first frame
+        //   WidgetsBinding.instance.addPostFrameCallback((_) {
+        //     final first = seeds.first;
+        //     _controller?.animateCamera(
+        //       CameraUpdate.newLatLngZoom(LatLng(first.lat, first.lng), 14),
+        //     );
+        //   });
+        // }
+        // return;
+      }
+    } else {
+      setState(() {
+        _reports
+          ..clear()
+          ..addAll(loaded);
+      });
+    }
+    debugPrint(
+      'imported? $imported  loaded=${loaded.length}  in-memory=${_reports.length}',
+    );
   }
 
   Future<void> _saveReports() async {
@@ -72,12 +167,6 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
       _storageKey,
       _reports.map((r) => jsonEncode(r.toMap())).toList(),
     );
-  }
-
-  Future<void> _deleteAllReportsForDebug() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(_storageKey);
-    debugPrint('All saved markers deleted from local storage.');
   }
 
   Set<Marker> get _visibleMarkers {
@@ -119,6 +208,29 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
     return set;
   }
 
+  // Report Markers
+  List<fmap.Marker> get _visibleMarkersOffline {
+    return _reports.where((r) => _visibleTypes.contains(r.type)).map((r) {
+      final color = switch (r.type) {
+        ReportType.shelter => Colors.green,
+        ReportType.highGround => Colors.blue,
+        ReportType.aid => Colors.red,
+        ReportType.sos => Colors.orange,
+      };
+
+      return fmap.Marker(
+        point: latlng.LatLng(r.lat, r.lng),
+        width: 40,
+        height: 40,
+        alignment: Alignment.center,
+        child: GestureDetector(
+          onTap: () => openReportDetails(context, r, _controller),
+          child: Icon(Icons.location_on, color: color, size: 40),
+        ),
+      );
+    }).toList();
+  }
+
   void _onMapCreated(GoogleMapController c) => _controller = c;
 
   void _onLongPress(LatLng pos) {
@@ -137,7 +249,7 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
 
     // Create and save report
     final newReport = Report(
-      id: DateTime.now().millisecondsSinceEpoch.toString(), // or a uuid
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
       type: result.type,
       lat: pos.latitude,
       lng: pos.longitude,
@@ -172,16 +284,17 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
     return Scaffold(
       body: Stack(
         children: [
-          GoogleMap(
-            initialCameraPosition: _initialPos,
-            onMapCreated: _onMapCreated,
-            myLocationEnabled: false, //do not show current location
-            myLocationButtonEnabled: false, //no jump to current location
-            markers: _visibleMarkers,
-            zoomControlsEnabled: false,
-            onLongPress: _onLongPress,
-            //compassEnabled: true,
-          ),
+          _isOnline ? _buildOnlineMap() : _buildOfflineMap(),
+          // GoogleMap(
+          //   initialCameraPosition: _initialPos,
+          //   onMapCreated: _onMapCreated,
+          //   myLocationEnabled: false, //do not show current location
+          //   myLocationButtonEnabled: false, //no jump to current location
+          //   markers: _visibleMarkers,
+          //   zoomControlsEnabled: false,
+          //   onLongPress: _onLongPress,
+          //   //compassEnabled: true,
+          // ),
           Positioned(
             child: SizedBox(
               width: MediaQuery.of(context).size.width * 0.5,
@@ -244,27 +357,27 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
                     shape: BoxShape.circle,
                   ),
                   child: IconButton(
-                    onPressed: () => {},
+                    onPressed: _downloadTiles,
                     icon: const Icon(Icons.file_download),
                     color: Colors.white,
-                    iconSize: 25,
+                    iconSize: 40,
                   ),
                 ),
 
-                SizedBox(height: 20),
+                //SizedBox(height: 20),
 
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.green,
-                    shape: BoxShape.circle,
-                  ),
-                  child: IconButton(
-                    onPressed: () => {},
-                    icon: const Icon(Icons.insert_drive_file_rounded),
-                    color: Colors.white,
-                    iconSize: 45,
-                  ),
-                ),
+                // Container(
+                //   decoration: BoxDecoration(
+                //     color: Colors.green,
+                //     shape: BoxShape.circle,
+                //   ),
+                //   child: IconButton(
+                //     onPressed: () => {},
+                //     icon: const Icon(Icons.insert_drive_file_rounded),
+                //     color: Colors.white,
+                //     iconSize: 45,
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -292,6 +405,64 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
           ),
         ],
       ),
+    );
+  }
+
+  // Widget _buildOfflineMap() {
+  //   return fmap.FlutterMap(
+  //     options: fmap.MapOptions(
+  //       initialCenter: latlng.LatLng(_maeSai.latitude, _maeSai.longitude),
+  //       initialZoom: 13,
+  //     ),
+  //     children: [
+  //       fmap.TileLayer(
+  //         urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  //         subdomains: const ['a', 'b', 'c'],
+  //         tileProvider: OfflineMapManager.tileProvider(), // <- cached/offline
+  //       ),
+  //       fmap.MarkerLayer(markers: _visibleMarkersOffline),
+  //     ],
+  //   );
+  // }
+
+  Widget _buildOnlineMap() {
+    return GoogleMap(
+      initialCameraPosition: _initialPos,
+      onMapCreated: (c) => _controller = c,
+      myLocationEnabled: false,
+      myLocationButtonEnabled: false,
+      zoomControlsEnabled: false,
+      markers: _visibleMarkers,
+      onLongPress: _onLongPress,
+    );
+  }
+
+  Widget _buildOfflineMap() {
+    if (_tilesRoot == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    return fmap.FlutterMap(
+      options: fmap.MapOptions(
+        initialCenter: latlng.LatLng(_maeSai.latitude, _maeSai.longitude),
+        initialZoom: 13,
+      ),
+      children: [
+        if (_online)
+          // ONLINE layer
+          fmap.TileLayer(
+            urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            //subdomains: const ['a', 'b', 'c'],
+            // default network provider
+          )
+        else
+          // OFFLINE layer (reads from files you downloaded earlier)
+          fmap.TileLayer(
+            urlTemplate: 'file://${_localTilesRoot!}/{z}/{x}/{y}.png',
+            tileProvider: fmap.FileTileProvider(),
+          ),
+        fmap.MarkerLayer(markers: _visibleMarkersOffline),
+      ],
     );
   }
 

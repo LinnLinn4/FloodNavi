@@ -118,19 +118,19 @@ void openReportDetails(
                     ),
                   ),
                   const SizedBox(width: 12),
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        //open external maps or route
-                      },
-                      icon: const Icon(Icons.directions),
-                      label: const Text('Directions'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        foregroundColor: Colors.white,
-                      ),
-                    ),
-                  ),
+                  // Expanded(
+                  //   child: ElevatedButton.icon(
+                  //     onPressed: () {
+                  //       //open external maps or route
+                  //     },
+                  //     icon: const Icon(Icons.directions),
+                  //     label: const Text('Directions'),
+                  //     style: ElevatedButton.styleFrom(
+                  //       backgroundColor: Colors.green,
+                  //       foregroundColor: Colors.white,
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ],

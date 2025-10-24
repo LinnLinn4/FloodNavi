@@ -1,45 +1,89 @@
-# Miscellaneous
-*.class
-*.log
-*.pyc
-*.swp
-.DS_Store
-.atom/
-.build/
-.buildlog/
-.history
-.svn/
-.swiftpm/
-migrate_working_dir/
+# Flutter & Dart
+.dart_tool/
+.packages
+.flutter-plugins
+.flutter-plugins-dependencies
+.fvm/
+build/
+ios/Flutter/.last_build_id
+flutter_export_environment.sh
 
-# IntelliJ related
+# IntelliJ / Android Studio
 *.iml
+.idea/
 *.ipr
 *.iws
-.idea/
+.gradle/
+local.properties
+.gradle/
+captures/
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
+# Android
+**/android/app/debug
+**/android/app/profile
+**/android/app/release
+**/android/key.properties
+**/android/.gradle/
+**/android/local.properties
+**/android/captures/
 
-# Flutter/Dart/Pub related
-**/doc/api/
-**/ios/Flutter/.last_build_id
+# iOS
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework/
+ios/Flutter/Flutter.podspec
+ios/Flutter/App.framework/
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+ios/Runner/GeneratedPluginRegistrant.*
+
+# Xcode
+*.xcuserstate
+*.xcworkspace
+*.xcuserdata
+DerivedData/
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Web
+lib/generated_plugin_registrant.dart
+web/.dart_tool/
+web/build/
+
+# Windows / Linux / macOS builds
+windows/
+linux/
+macos/
+
+# VS Code
+.vscode/
+.history/
+
+# Logs & temp
+*.log
+*.tmp
+*.swp
+*.lock
+*.bak
+*.DS_Store
+
+# ObjectBox / Hive / SQLite data
+*.mdb
+*.sqlite
+*.hive
+
+# Environment / secrets
+.env
+.env.*
+keys.json
+google-services.json
+GoogleService-Info.plist
+
+# Misc
+coverage/
+test_coverage/
 .dart_tool/
-.flutter-plugins-dependencies
-.pub-cache/
-.pub/
-/build/
-/coverage/
-
-# Symbolication related
-app.*.symbols
-
-# Obfuscation related
-app.*.map.json
-
-# Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
+.cache/
+*.keystore
