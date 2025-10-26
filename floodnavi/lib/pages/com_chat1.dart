@@ -171,39 +171,39 @@ class _CommunityChatState extends State<CommunityChat> {
     );
   }
 
-  Widget _buildInfoRow(String emoji, String text) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 3),
-      child: Row(
-        children: [
-          Text(emoji, style: const TextStyle(fontSize: 16)),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              text,
-              style: const TextStyle(color: Colors.black87, fontSize: 14),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _buildInfoRow(String emoji, String text) {
+  //   return Padding(
+  //     padding: const EdgeInsets.only(bottom: 3),
+  //     child: Row(
+  //       children: [
+  //         Text(emoji, style: const TextStyle(fontSize: 16)),
+  //         const SizedBox(width: 8),
+  //         Expanded(
+  //           child: Text(
+  //             text,
+  //             style: const TextStyle(color: Colors.black87, fontSize: 14),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  Widget _buildReactionButton(IconData icon, String count) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(icon, color: Colors.black87, size: 21),
-        if (count.isNotEmpty) ...[
-          const SizedBox(width: 4),
-          Text(
-            count,
-            style: const TextStyle(color: Colors.black87, fontSize: 16),
-          ),
-        ],
-      ],
-    );
-  }
+  // Widget _buildReactionButton(IconData icon, String count) {
+  //   return Row(
+  //     mainAxisSize: MainAxisSize.min,
+  //     children: [
+  //       Icon(icon, color: Colors.black87, size: 21),
+  //       if (count.isNotEmpty) ...[
+  //         const SizedBox(width: 4),
+  //         Text(
+  //           count,
+  //           style: const TextStyle(color: Colors.black87, fontSize: 16),
+  //         ),
+  //       ],
+  //     ],
+  //   );
+  // }
 
   Widget _buildMessageBubble(String message) {
     return Padding(

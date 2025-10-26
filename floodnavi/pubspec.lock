@@ -740,18 +740,18 @@ packages:
     dependency: "direct main"
     description:
       name: pdfrx
-      sha256: b1173b9cca472a62e02fe0debfb90e47b2f1dad87afa33605180b53f86edce00
+      sha256: "30f5843875c0110dfd216cb75cae52df36c847dcc0ecb3fc4afdb98e45f57e4a"
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.4"
+    version: "2.2.5"
   pdfrx_engine:
     dependency: transitive
     description:
       name: pdfrx_engine
-      sha256: "52bb9651885e8c9b2d339eeabcd424574b5b880f9d431dfbe3201d593267562c"
+      sha256: "9787140d7e0bad68497961fe7fd495b314f6e7cb08a1f883cdcb9b6582ea01ae"
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.1"
+    version: "0.2.2"
   petitparser:
     dependency: transitive
     description:

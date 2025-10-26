@@ -183,23 +183,23 @@ class _CommunityChatState extends State<CommunityChat> {
     );
   }
 
-  Widget _buildInfoRow(String emoji, String text) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 4),
-      child: Row(
-        children: [
-          Text(emoji, style: const TextStyle(fontSize: 16)),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              text,
-              style: const TextStyle(color: Colors.black87, fontSize: 14),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _buildInfoRow(String emoji, String text) {
+  //   return Padding(
+  //     padding: const EdgeInsets.only(bottom: 4),
+  //     child: Row(
+  //       children: [
+  //         Text(emoji, style: const TextStyle(fontSize: 16)),
+  //         const SizedBox(width: 8),
+  //         Expanded(
+  //           child: Text(
+  //             text,
+  //             style: const TextStyle(color: Colors.black87, fontSize: 14),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _buildReactionButton(String emoji, String count) {
     return GestureDetector(

@@ -64,10 +64,6 @@ RiskResult computeFloodRiskDaily({
           .sublist((m - aTake).clamp(0, m), m)
           .fold<double>(0, (s, v) => s + v);
 
-      // forecast = last element is "today", next ones if API provides future
-      // If your weather API provides both past & future in one list, adjust slice.
-      // For Open-Meteo daily forecast endpoint, you’ll typically get future days directly.
-      // Here we conservatively treat the *last* `forecastDays` as “next days”
       if (m >= forecastDays) {
         forecastMm = precipPerDay
             .sublist(m - forecastDays, m)
@@ -76,7 +72,6 @@ RiskResult computeFloodRiskDaily({
     }
   }
 
-  // Heuristics (tune these!)
   // Typical signals:
   // - Level above threshold (or close)
   // - Positive slope / rising quickly

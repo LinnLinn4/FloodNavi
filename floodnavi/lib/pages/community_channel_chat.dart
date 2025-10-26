@@ -104,11 +104,11 @@ class CommunityChannelChat extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          _buildInfoRow('📍', "Wat Sri Muang Temple Community Hall"),
-          _buildInfoRow('👥', "Capacity: 20 spots free"),
-          _buildInfoRow('🚰', "Drinking water, food, power"),
-          _buildInfoRow('📏', "2.1 km from you"),
-          _buildInfoRow('🛣️', "Road accessible"),
+          _buildInfoRow('📍', "Wat Mae Sai Shelter"),
+          _buildInfoRow('👥', "Capacity: 120"),
+          _buildInfoRow('🏛️', "Community hall; mats & blankets available"),
+          _buildInfoRow('🛣️', "Truck accessible; parking behind the hall"),
+
           const SizedBox(height: 10),
           Row(
             children: [

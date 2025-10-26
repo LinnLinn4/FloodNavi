@@ -54,10 +54,10 @@ Future<WeatherDaily> fetchWeatherDaily({
   // }
   // final daily = j['daily'] as Map<String, dynamic>;
 
-  List<T> asList<T>(dynamic x, String key) {
-    if (x is! List) throw Exception('Weather API "$key" is not a List');
-    return x.map((e) => e as T).toList();
-  }
+  // List<T> asList<T>(dynamic x, String key) {
+  //   if (x is! List) throw Exception('Weather API "$key" is not a List');
+  //   return x.map((e) => e as T).toList();
+  // }
 
   // final times = asList<String>(
   //   daily['time'],

@@ -1,4 +1,3 @@
-import 'package:floodnavi/pages/map_page.dart';
 import 'package:flutter/material.dart';
 import '../utils/flood_forecast/graph.dart';
 import '../utils/flood_forecast/weather_api.dart';
@@ -22,8 +21,8 @@ class HomePage extends StatefulWidget {
 class _HomePage extends State<HomePage> {
   late final Future<(FloodDaily, WeatherDaily)> _futureBothDaily;
   forecast.RiskLevel? _lastAlertedLevel;
-  DateTime? _lastAlertAt;
-  final Duration _alertCooldown = const Duration(minutes: 15);
+  //DateTime? _lastAlertAt;
+  //final Duration _alertCooldown = const Duration(minutes: 15);
 
   @override
   void initState() {
@@ -241,12 +240,12 @@ class _HomePage extends State<HomePage> {
                         forecast.RiskLevel.low => Icons.check_circle,
                       };
 
-                      final isHighOrSevere =
-                          risk.level.index >= noti.RiskLevel.high.index;
-                      final cooledDown =
-                          _lastAlertAt == null ||
-                          DateTime.now().difference(_lastAlertAt!) >
-                              _alertCooldown;
+                      // final isHighOrSevere =
+                      //     risk.level.index >= noti.RiskLevel.high.index;
+                      // final cooledDown =
+                      //     _lastAlertAt == null ||
+                      //     DateTime.now().difference(_lastAlertAt!) >
+                      //         _alertCooldown;
 
                       if (risk.level.index >= forecast.RiskLevel.high.index &&
                           risk.level != _lastAlertedLevel) {

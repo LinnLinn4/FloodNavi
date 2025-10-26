@@ -231,7 +231,7 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
     }).toList();
   }
 
-  void _onMapCreated(GoogleMapController c) => _controller = c;
+  //void _onMapCreated(GoogleMapController c) => _controller = c;
 
   void _onLongPress(LatLng pos) {
     _openReportForm(context, pos);
