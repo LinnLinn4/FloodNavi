@@ -54,7 +54,7 @@ RiskResult computeFloodRiskDaily({
   // Antecedent wetness & near-term forecast
   double antecedentMm = 0, forecastMm = 0;
   if (tPrecip != null && precipPerDay != null && tPrecip.isNotEmpty) {
-    // We assume same daily alignment or near-daily (keep it simple):
+    // We assume same daily alignment or near-daily:
     // Sum last `antecedentDays` and next `forecastDays`
     final m = precipPerDay.length;
     if (m > 0) {

@@ -7,7 +7,7 @@ const double kMeanVelocity = 1.0; // m/s (0.8–1.3 typical)
 const double kAvgLevelM = 392.72; // “normal” water-surface elevation (m)
 const double kBankLevelM = 397.59; // river bank elevation (m)
 
-// Choose anchor discharges (m³/s). Adjust if you get real values:
+// Choose anchor discharges (m³/s).
 const double kQAvg = 50.0; // discharge around when level ≈ 392.72 m
 const double kQBank = 200.0; // discharge around when level ≈ 397.59 m
 

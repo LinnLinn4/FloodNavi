@@ -1,4 +1,3 @@
-//import 'package:floodnavi/utils/report/sos_fields.dart';
 import 'report.dart';
 import 'package:flutter/material.dart';
 
@@ -188,21 +187,10 @@ class _ReportFormState extends State<ReportForm> {
 
       case ReportType.sos:
         return _buildSosFields();
-      // return SosFields(
-      //   phoneController: _sosPhoneCtrl,
-      //   peopleController: _sosPeopleCtrl,
-      //   detailsController: _detailsCtrl,
-      //   severity: _sosSeverity,
-      //   medical: _sosMedical,
-      //   trapped: _sosTrapped,
-      //   onSeverityChanged: (v) => setState(() => _sosSeverity = v),
-      //   onMedicalChanged: (v) => setState(() => _sosMedical = v),
-      //   onTrappedChanged: (v) => setState(() => _sosTrapped = v),
-      // );
     }
   }
 
-  /// Fields for Shelter / HighGround (your original ones)
+  /// Fields for Shelter / HighGround
   Widget _buildShelterFields() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -271,12 +259,11 @@ class _ReportFormState extends State<ReportForm> {
     );
   }
 
-  /// Minimal example for Aid (customize as needed)
+  /// Minimal example for Aid
   Widget _buildAidFields() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // reuse details/access if you like
         TextFormField(
           controller: _detailsCtrl,
           decoration: const InputDecoration(labelText: 'Aid details / notes'),

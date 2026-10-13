@@ -138,16 +138,6 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
           seeds.map((r) => jsonEncode(r.toMap())).toList(),
         );
         await prefs.setBool(seedImportedKey, true);
-
-        // Center the camera after the first frame
-        //   WidgetsBinding.instance.addPostFrameCallback((_) {
-        //     final first = seeds.first;
-        //     _controller?.animateCamera(
-        //       CameraUpdate.newLatLngZoom(LatLng(first.lat, first.lng), 14),
-        //     );
-        //   });
-        // }
-        // return;
       }
     } else {
       setState(() {
@@ -183,25 +173,7 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
             onTap: () => openReportDetails(context, r, _controller),
           ),
           onTap: () => openReportDetails(context, r, _controller),
-          // draggable: true,
           icon: BitmapDescriptor.defaultMarkerWithHue(r.type.hue),
-          // onDragEnd: (p) {
-          //   final i = _reports.indexWhere((e) => e.id == r.id);
-          //   if (i != -1) {
-          //     setState(
-          //       () => _reports[i] = Report(
-          //         id: r.id,
-          //         type: r.type,
-          //         lat: p.latitude,
-          //         lng: p.longitude,
-          //         placeName: r.placeName,
-          //         details: r.details,
-          //         createdAt: r.createdAt,
-          //       ),
-          //     );
-          //     _saveReports();
-          //   }
-          // },
         ),
       );
     }
@@ -230,8 +202,6 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
       );
     }).toList();
   }
-
-  void _onMapCreated(GoogleMapController c) => _controller = c;
 
   void _onLongPress(LatLng pos) {
     _openReportForm(context, pos);
@@ -285,16 +255,6 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
       body: Stack(
         children: [
           _isOnline ? _buildOnlineMap() : _buildOfflineMap(),
-          // GoogleMap(
-          //   initialCameraPosition: _initialPos,
-          //   onMapCreated: _onMapCreated,
-          //   myLocationEnabled: false, //do not show current location
-          //   myLocationButtonEnabled: false, //no jump to current location
-          //   markers: _visibleMarkers,
-          //   zoomControlsEnabled: false,
-          //   onLongPress: _onLongPress,
-          //   //compassEnabled: true,
-          // ),
           Positioned(
             child: SizedBox(
               width: MediaQuery.of(context).size.width * 0.5,
@@ -363,21 +323,6 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
                     iconSize: 40,
                   ),
                 ),
-
-                //SizedBox(height: 20),
-
-                // Container(
-                //   decoration: BoxDecoration(
-                //     color: Colors.green,
-                //     shape: BoxShape.circle,
-                //   ),
-                //   child: IconButton(
-                //     onPressed: () => {},
-                //     icon: const Icon(Icons.insert_drive_file_rounded),
-                //     color: Colors.white,
-                //     iconSize: 45,
-                //   ),
-                // ),
               ],
             ),
           ),
@@ -407,23 +352,6 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
       ),
     );
   }
-
-  // Widget _buildOfflineMap() {
-  //   return fmap.FlutterMap(
-  //     options: fmap.MapOptions(
-  //       initialCenter: latlng.LatLng(_maeSai.latitude, _maeSai.longitude),
-  //       initialZoom: 13,
-  //     ),
-  //     children: [
-  //       fmap.TileLayer(
-  //         urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-  //         subdomains: const ['a', 'b', 'c'],
-  //         tileProvider: OfflineMapManager.tileProvider(), // <- cached/offline
-  //       ),
-  //       fmap.MarkerLayer(markers: _visibleMarkersOffline),
-  //     ],
-  //   );
-  // }
 
   Widget _buildOnlineMap() {
     return GoogleMap(
@@ -456,7 +384,7 @@ class _MapPageState extends State<MapPage> with AutomaticKeepAliveClientMixin {
             // default network provider
           )
         else
-          // OFFLINE layer (reads from files you downloaded earlier)
+          // OFFLINE layer (reads from files the user downloaded earlier)
           fmap.TileLayer(
             urlTemplate: 'file://${_localTilesRoot!}/{z}/{x}/{y}.png',
             tileProvider: fmap.FileTileProvider(),

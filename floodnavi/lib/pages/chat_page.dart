@@ -18,7 +18,6 @@ class _ChatPageState extends State<ChatPage> {
 
   final List<Map<String, dynamic>> chats = [
     {
-      // Use the Material icon for Community Chat
       'avatar': Icons.groups,
       'isIcon': true,
       'title': 'Community Chat',
@@ -28,7 +27,6 @@ class _ChatPageState extends State<ChatPage> {
       'active': false,
     },
     {
-      // Use emoji for Channel
       'avatar': '📢',
       'isIcon': false,
       'title': 'Channel',

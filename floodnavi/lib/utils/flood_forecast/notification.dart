@@ -21,17 +21,10 @@ class NotificationService {
   Future<void> init() async {
     if (_initialized) return;
 
-    // iOS settings
-    const ios = DarwinInitializationSettings(
-      requestAlertPermission: true,
-      requestBadgePermission: true,
-      requestSoundPermission: true,
-    );
-
-    // Android settings (small launcher icon; ensure you have this resource)
+    // Android settings
     const android = AndroidInitializationSettings('@mipmap/ic_launcher');
 
-    final settings = InitializationSettings(android: android, iOS: ios);
+    final settings = InitializationSettings(android: android);
     await _plugin.initialize(settings);
 
     // Android 8+ channels
@@ -85,8 +78,6 @@ class NotificationService {
       enableVibration: true,
       vibrationPattern: vibration,
       category: AndroidNotificationCategory.alarm,
-      // Full-screen intent (optional): shows heads-up when app in foreground
-      // fullScreenIntent: true,
     );
 
     final iosDetails = DarwinNotificationDetails(

@@ -4,14 +4,15 @@ import '../utils/flood_forecast/weather_api.dart';
 import '../utils/flood_forecast/flood_daily.dart';
 import 'package:floodnavi/utils/flood_forecast/forecast_model.dart' as forecast;
 import 'package:floodnavi/utils/flood_forecast/notification.dart' as noti;
-import 'emergency_contact.dart'; // Import your emergency contact page
-import 'emergency_handbook.dart'; // Import your emergency handbook page
+import 'emergency_contact.dart';
+import 'emergency_handbook.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
   static const _lat = 20.428056; // Mae Sai
   static const _lon = 99.883611;
   static const _dischargeThreshold = 397.59;
+  const HomePage({super.key, required this.onTabSelected});
+  final void Function(int) onTabSelected;
 
   @override
   State<HomePage> createState() => _HomePage();
@@ -20,8 +21,6 @@ class HomePage extends StatefulWidget {
 class _HomePage extends State<HomePage> {
   late final Future<(FloodDaily, WeatherDaily)> _futureBothDaily;
   forecast.RiskLevel? _lastAlertedLevel;
-  DateTime? _lastAlertAt;
-  final Duration _alertCooldown = const Duration(minutes: 15);
 
   @override
   void initState() {
@@ -62,13 +61,7 @@ class _HomePage extends State<HomePage> {
           padding: EdgeInsets.only(top: 20),
           width: double.infinity,
 
-          decoration: const BoxDecoration(
-            color: Colors.black,
-            // image: DecorationImage(
-            //   image: AssetImage("assets/images/background.jpg"),
-            //   fit: BoxFit.cover,
-            // ),
-          ),
+          decoration: const BoxDecoration(color: Colors.black),
 
           child: Padding(
             padding: const EdgeInsets.all(15),
@@ -82,64 +75,6 @@ class _HomePage extends State<HomePage> {
                 SizedBox(height: 30),
                 SizedBox(
                   height: 220,
-
-                  // child: FutureBuilder<FloodHourly>(
-                  //   future: _future,
-                  //   builder: (context, snap) {
-                  //     if (snap.connectionState == ConnectionState.waiting) {
-                  //       return const Center(
-                  //         child: CircularProgressIndicator(color: Colors.white),
-                  //       );
-                  //     }
-                  //     if (snap.hasError || !snap.hasData) {
-                  //       return const Center(
-                  //         child: Text(
-                  //           'Failed to load data',
-                  //           style: TextStyle(color: Colors.white70),
-                  //         ),
-                  //       );
-                  //     }
-
-                  //     final data = snap.data!;
-                  //     final now = DateTime.now().toUtc();
-                  //     final from = now.subtract(const Duration(hours: 6));
-                  //     final times = <DateTime>[];
-                  //     final vals = <double>[];
-
-                  //     for (var i = 0; i < data.time.length; i++) {
-                  //       final t = data.time[i].toUtc();
-                  //       if (!t.isBefore(from) && !t.isAfter(now)) {
-                  //         times.add(t);
-                  //         vals.add(data.discharge[i]);
-                  //       }
-                  //     }
-
-                  //     if (times.isEmpty) {
-                  //       return const Center(
-                  //         child: Text(
-                  //           'No recent data',
-                  //           style: TextStyle(color: Colors.white70),
-                  //         ),
-                  //       );
-                  //     }
-
-                  //     // ensure at most 7 ticks (0..6)
-                  //     // while (times.length > 7) {
-                  //     //   times.removeAt(0);
-                  //     //   vals.removeAt(0);
-                  //     // }
-
-                  //     final labels = times
-                  //         .map((d) => '${d.hour.toString().padLeft(2, '0')}:00')
-                  //         .toList();
-
-                  //     return WaterLevelChart(
-                  //       levels: vals,
-                  //       labels: labels,
-                  //       floodThreshold: HomePage._dischargeThreshold,
-                  //     );
-                  //   },
-                  // ),
                   child: FutureBuilder<FloodDaily>(
                     future: fetchFloodDaily(
                       lat: HomePage._lat,
@@ -238,13 +173,6 @@ class _HomePage extends State<HomePage> {
                         forecast.RiskLevel.low => Icons.check_circle,
                       };
 
-                      final isHighOrSevere =
-                          risk.level.index >= noti.RiskLevel.high.index;
-                      final cooledDown =
-                          _lastAlertAt == null ||
-                          DateTime.now().difference(_lastAlertAt!) >
-                              _alertCooldown;
-
                       if (risk.level.index >= forecast.RiskLevel.high.index &&
                           risk.level != _lastAlertedLevel) {
                         _lastAlertedLevel = risk.level;
@@ -271,7 +199,6 @@ class _HomePage extends State<HomePage> {
                           borderRadius: BorderRadius.circular(6),
                         ),
                         padding: const EdgeInsets.all(20),
-                        //margin: const EdgeInsets.symmetric(horizontal: 4),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
@@ -308,6 +235,9 @@ class _HomePage extends State<HomePage> {
                             child: _buildButton(
                               Icons.safety_check,
                               "Nearest SafeZone",
+                              () {
+                                widget.onTabSelected(1);
+                              },
                             ),
                           ),
                           SizedBox(width: 10),
@@ -315,6 +245,9 @@ class _HomePage extends State<HomePage> {
                             child: _buildButton(
                               Icons.insert_drive_file_rounded,
                               "Report Info",
+                              () {
+                                widget.onTabSelected(1);
+                              },
                             ),
                           ),
                         ],
