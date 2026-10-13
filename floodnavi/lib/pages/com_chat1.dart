@@ -41,12 +41,6 @@ class _CommunityChatState extends State<CommunityChat> {
             ),
           ],
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.info_outline, color: Colors.white),
-            onPressed: () {},
-          ),
-        ],
       ),
       body: Column(
         children: [
@@ -116,87 +110,15 @@ class _CommunityChatState extends State<CommunityChat> {
                   ],
                 ),
                 const SizedBox(height: 7),
-                const Text(
-                  'Shelter Alert',
-                  style: TextStyle(
-                    color: Colors.black87,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                _buildInfoRow('📍', 'Wat Sri Muang Temple Community Hall'),
-                _buildInfoRow('👥', 'Capacity: 20 spots free'),
-                _buildInfoRow('🚰', 'Drinking water, food, power'),
-                _buildInfoRow('📏', '2.1 km from you'),
-                _buildInfoRow('🛣️', 'Road accessible'),
-                _buildInfoRow('⏳', 'Status: Pending'),
-                const SizedBox(height: 10),
-                Row(
-                  children: [
-                    // up arrow and number
-                    _buildReactionButton(Icons.arrow_upward, '4'),
-                    const SizedBox(width: 16),
-                    // down arrow and number
-                    _buildReactionButton(Icons.arrow_downward, '5'),
-                    const Spacer(),
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF4CAF50),
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(22),
-                        ),
-                        visualDensity: VisualDensity.compact,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 8,
-                        ),
-                        elevation: 0,
-                      ),
-                      child: const Text('View', style: TextStyle(fontSize: 15)),
-                    ),
-                  ],
+                const SizedBox(height: 5),
+                Text(
+                  "Are there anyone near Mae Sai Market?",
+                  style: const TextStyle(color: Colors.black, fontSize: 15),
                 ),
               ],
             ),
           ),
         ),
-      ],
-    );
-  }
-
-  Widget _buildInfoRow(String emoji, String text) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 3),
-      child: Row(
-        children: [
-          Text(emoji, style: const TextStyle(fontSize: 16)),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              text,
-              style: const TextStyle(color: Colors.black87, fontSize: 14),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildReactionButton(IconData icon, String count) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(icon, color: Colors.black87, size: 21),
-        if (count.isNotEmpty) ...[
-          const SizedBox(width: 4),
-          Text(
-            count,
-            style: const TextStyle(color: Colors.black87, fontSize: 16),
-          ),
-        ],
       ],
     );
   }

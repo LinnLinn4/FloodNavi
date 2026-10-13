@@ -10,7 +10,7 @@ class OfflineMapManager {
     return '${dir.path}/tiles';
   }
 
-  /// Call from your download button.
+  /// Call from download button.
   static Future<void> downloadMaeSai({
     double south = 20.40,
     double west = 99.85,

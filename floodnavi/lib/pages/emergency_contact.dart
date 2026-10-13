@@ -64,6 +64,7 @@ class EmergencyContactScreen extends StatelessWidget {
         backgroundColor: Colors.green,
         centerTitle: true,
         elevation: 3,
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -88,8 +89,8 @@ class EmergencyContactScreen extends StatelessWidget {
                   contentPadding: EdgeInsets.all(16),
                   leading: CircleAvatar(
                     backgroundColor: contact.color.withOpacity(0.15),
-                    child: Icon(contact.icon, color: contact.color, size: 28),
                     radius: 28,
+                    child: Icon(contact.icon, color: contact.color, size: 28),
                   ),
                   title: Text(
                     contact.name,

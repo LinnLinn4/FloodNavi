@@ -50,37 +50,6 @@ void openReportDetails(
                 ],
               ),
               const SizedBox(height: 6),
-
-              // Text(
-              //   'Location: ${r.lat.toStringAsFixed(5)}, ${r.lng.toStringAsFixed(5)}',
-              //   style: const TextStyle(color: Colors.black54),
-              // ),
-              // const SizedBox(height: 4),
-              // Text(
-              //   'Type: ${r.type.label}',
-              //   style: const TextStyle(color: Colors.black54),
-              // ),
-              // Text(
-              //   'Name: ${r.placeName}',
-              //   style: const TextStyle(color: Colors.black54),
-              // ),
-              // Text(
-              //   'Estimated Capacity: ${r.estCapacity} people',
-              //   style: const TextStyle(color: Colors.black54),
-              // ),
-              // Text(
-              //   'Available space: ${r.estCapacity - r.currCapacity} people',
-              //   style: const TextStyle(color: Colors.black54),
-              // ),
-              // const Text('Facilities', style: TextStyle(color: Colors.black54)),
-              // _facilitiesRow(r),
-              // if (r.access.isNotEmpty)
-              //   Text(
-              //     'Accessibilities: ${r.access}',
-              //     style: TextStyle(color: Colors.black54),
-              //   ),
-              // if (r.details.isNotEmpty)
-              //   Text(r.details, style: TextStyle(color: Colors.black54)),
               _row('Type', r.type.label),
               _row(
                 'Location',
@@ -118,19 +87,6 @@ void openReportDetails(
                     ),
                   ),
                   const SizedBox(width: 12),
-                  // Expanded(
-                  //   child: ElevatedButton.icon(
-                  //     onPressed: () {
-                  //       //open external maps or route
-                  //     },
-                  //     icon: const Icon(Icons.directions),
-                  //     label: const Text('Directions'),
-                  //     style: ElevatedButton.styleFrom(
-                  //       backgroundColor: Colors.green,
-                  //       foregroundColor: Colors.white,
-                  //     ),
-                  //   ),
-                  // ),
                 ],
               ),
             ],
@@ -224,9 +180,6 @@ Widget _typeSpecificSection(Report r) {
       );
 
     case ReportType.sos:
-      // Assumes these fields exist in your Report model (nullable for others):
-      // phone (String?), peopleCount (int?), severity (String?),
-      // medical (bool?), trapped (bool?)
       final sev = r.severity ?? '—';
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -35,12 +35,12 @@ class DefaultLayout extends StatefulWidget {
 class _DefaultLayoutState extends State<DefaultLayout> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = const [
-    HomePage(),
-    MapPage(),
-    ChatPage(),
-    ProfilePage(),
-  ];
+  // final List<Widget> _pages = const [
+  //   HomePage(onTabSelected: (i) => setState(() => _selectedI = i)),
+  //   MapPage(),
+  //   ChatPage(),
+  //   ProfilePage(),
+  // ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -51,7 +51,15 @@ class _DefaultLayoutState extends State<DefaultLayout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_selectedIndex],
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: [
+          HomePage(onTabSelected: (i) => setState(() => _selectedIndex = i)),
+          const MapPage(),
+          ChatPage(),
+          ProfilePage(),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
         type: BottomNavigationBarType.fixed,

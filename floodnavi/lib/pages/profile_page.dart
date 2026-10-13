@@ -89,7 +89,6 @@ class ProfilePage extends StatelessWidget {
           ],
         ),
       ),
-      // Add your bottom navigation bar here if it's part of the main scaffold
     );
   }
 }

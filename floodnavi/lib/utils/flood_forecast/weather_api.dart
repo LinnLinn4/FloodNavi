@@ -42,32 +42,6 @@ Future<WeatherDaily> fetchWeatherDaily({
       .map((n) => n.toDouble())
       .toList();
 
-  // late final Map<String, dynamic> j;
-  // try {
-  //   j = jsonDecode(r.body) as Map<String, dynamic>;
-  // } catch (e) {
-  //   throw Exception('Weather API JSON parse error: $e\nBody: ${r.body}');
-  // }
-
-  // if (j['daily'] == null) {
-  //   throw Exception('Weather API missing "daily" in response: ${r.body}');
-  // }
-  // final daily = j['daily'] as Map<String, dynamic>;
-
-  List<T> asList<T>(dynamic x, String key) {
-    if (x is! List) throw Exception('Weather API "$key" is not a List');
-    return x.map((e) => e as T).toList();
-  }
-
-  // final times = asList<String>(
-  //   daily['time'],
-  //   'time',
-  // ).map((s) => DateTime.parse(s).toUtc()).toList();
-  // final precipSum = asList<num>(
-  //   daily['precipitation'],
-  //   'precipitation',
-  // ).map((n) => (n).toDouble()).toList();
-
   if (times.isEmpty || precip.isEmpty) {
     throw Exception('Weather API returned empty arrays');
   }

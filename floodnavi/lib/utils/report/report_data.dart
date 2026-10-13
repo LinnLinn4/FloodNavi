@@ -1,8 +1,8 @@
-// 1) Put near your other fields in _MapPageState
 import "report.dart";
 
 const seedImportedKey = 'seed_imported_v1';
 
+//Sample data
 final List<Report> reports = [
   Report(
     id: 'seed_shelter_1',
@@ -52,5 +52,4 @@ final List<Report> reports = [
     hasCharging: false,
     access: 'Near market parking lot',
   ),
-  // Add more seeds here...
 ];
